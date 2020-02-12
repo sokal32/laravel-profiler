@@ -44,6 +44,8 @@ class RedisTracker extends BaseTracker
         $this->meta->put('redis_count', $this->redisListener->count());
         $this->meta->put('redis_can_be_tracked', $this->redisCanBeTracked);
         $this->data->put('redis', $commands);
+
+        $this->redisListener->forget();
     }
 
     /**

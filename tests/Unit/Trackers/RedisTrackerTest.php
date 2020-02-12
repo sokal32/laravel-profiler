@@ -2,7 +2,9 @@
 
 namespace JKocik\Laravel\Profiler\Tests\Unit\Trackers;
 
+use Illuminate\Support\Facades\Event;
 use JKocik\Laravel\Profiler\Tests\TestCase;
+use Illuminate\Redis\Events\CommandExecuted;
 use JKocik\Laravel\Profiler\Trackers\RedisTracker;
 
 class RedisTrackerTest extends TestCase
@@ -81,6 +83,25 @@ class RedisTrackerTest extends TestCase
         $this->tapLaravelVersionFrom(5.7, function () use ($tracker) {
             $this->assertEquals(1, $tracker->meta()->get('redis_count'));
             $this->assertCount(1, $tracker->data()->get('redis'));
+        });
+    }
+
+    /** @test */
+    function forgets_listener_after_terminate()
+    {
+        $tracker = $this->app->make(RedisTracker::class);
+        $this->app->make('redis')->set('name', 'Laravel Profiler');
+
+        $tracker->terminate();
+        $this->assertFalse(Event::hasListeners(CommandExecuted::class));
+
+        $tracker->terminate();
+        $this->tapLaravelVersionTill(5.6, function () {
+            $this->assertTrue(true);
+        });
+        $this->tapLaravelVersionFrom(5.7, function () use ($tracker) {
+            $this->assertEquals(0, $tracker->meta()->get('redis_count'));
+            $this->assertCount(0, $tracker->data()->get('redis'));
         });
     }
 }

@@ -30,6 +30,16 @@ class RedisListener implements LaravelListener
     }
 
     /**
+     * @return void
+     */
+    public function forget(): void
+    {
+        Event::forget(CommandExecuted::class);
+        $this->commands = [];
+        $this->count = 0;
+    }
+
+    /**
      * @return Collection
      */
     public function commands(): Collection
