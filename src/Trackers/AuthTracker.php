@@ -31,5 +31,7 @@ class AuthTracker extends BaseTracker
     public function terminate(): void
     {
         $this->data->put('auth', $this->authListener->user());
+
+        $this->authListener->forget();
     }
 }

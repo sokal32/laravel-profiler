@@ -3,7 +3,9 @@
 namespace JKocik\Laravel\Profiler\Tests\Unit\Trackers;
 
 use App\User;
+use Illuminate\Auth\Events\Logout;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Artisan;
 use JKocik\Laravel\Profiler\Tests\TestCase;
 use JKocik\Laravel\Profiler\Trackers\AuthTracker;
@@ -70,5 +72,23 @@ class AuthTrackerTest extends TestCase
         $auth = $tracker->data()->get('auth');
 
         $this->assertNull($auth);
+    }
+
+    /** @test */
+    function forgets_listener_after_terminate()
+    {
+        $tracker = $this->app->make(AuthTracker::class);
+
+        $user = factory(User::class)->create([
+            'email' => 'login.me@example.com',
+        ]);
+        Auth::login($user);
+        Auth::logout();
+
+        $tracker->terminate();
+        $this->assertFalse(Event::hasListeners(Logout::class));
+
+        $tracker->terminate();
+        $this->assertNull($tracker->data()->get('auth'));
     }
 }

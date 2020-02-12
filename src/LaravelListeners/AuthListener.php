@@ -26,6 +26,15 @@ class AuthListener implements LaravelListener
     }
 
     /**
+     * @return void
+     */
+    public function forget(): void
+    {
+        Event::forget(Logout::class);
+        $this->user = null;
+    }
+
+    /**
      * @return User|null
      */
     public function user(): ?Model
