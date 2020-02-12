@@ -3,6 +3,7 @@
 namespace JKocik\Laravel\Profiler\Tests\Unit\Trackers;
 
 use App\User;
+use Illuminate\Support\Facades\Event;
 use JKocik\Laravel\Profiler\Tests\TestCase;
 use JKocik\Laravel\Profiler\Trackers\ViewsTracker;
 
@@ -148,5 +149,19 @@ class ViewsTrackerTest extends TestCase
         $tracker->terminate();
 
         $this->assertCount(1, $tracker->data()->get('views'));
+    }
+
+    /** @test */
+    function forgets_listener_after_terminate()
+    {
+        $tracker = $this->app->make(ViewsTracker::class);
+
+        view('tests::dummy-view-a')->render();
+
+        $tracker->terminate();
+        $this->assertFalse(Event::hasListeners('composing:*'));
+
+        $tracker->terminate();
+        $this->assertCount(0, $tracker->data()->get('views'));
     }
 }

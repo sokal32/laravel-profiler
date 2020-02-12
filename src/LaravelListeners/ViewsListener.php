@@ -25,6 +25,15 @@ class ViewsListener implements LaravelListener
     }
 
     /**
+     * @return void
+     */
+    public function forget(): void
+    {
+        Event::forget('composing:*');
+        $this->views = [];
+    }
+
+    /**
      * @return Collection
      */
     public function views(): Collection

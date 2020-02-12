@@ -68,5 +68,7 @@ class ViewsTracker extends BaseTracker
         })->values();
 
         $this->data->put('views', $views);
+
+        $this->viewsListener->forget();
     }
 }
