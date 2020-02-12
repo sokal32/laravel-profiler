@@ -34,6 +34,19 @@ class QueriesListener implements LaravelListener
     }
 
     /**
+     * @return void
+     */
+    public function forget(): void
+    {
+        Event::forget(QueryExecuted::class);
+        Event::forget(TransactionBeginning::class);
+        Event::forget(TransactionCommitted::class);
+        Event::forget(TransactionRolledBack::class);
+        $this->queries = [];
+        $this->count = 0;
+    }
+
+    /**
      * @return Collection
      */
     public function queries(): Collection

@@ -40,6 +40,8 @@ class QueriesTracker extends BaseTracker
 
         $this->meta->put('queries_count', $this->queriesListener->count());
         $this->data->put('queries', $queries);
+
+        $this->queriesListener->forget();
     }
 
     /**

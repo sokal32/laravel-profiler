@@ -6,9 +6,14 @@ use App\User;
 use Exception;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Artisan;
 use JKocik\Laravel\Profiler\Tests\TestCase;
+use Illuminate\Database\Events\QueryExecuted;
+use Illuminate\Database\Events\TransactionCommitted;
+use Illuminate\Database\Events\TransactionBeginning;
 use JKocik\Laravel\Profiler\Trackers\QueriesTracker;
+use Illuminate\Database\Events\TransactionRolledBack;
 
 class QueriesTrackerTest extends TestCase
 {
@@ -244,5 +249,31 @@ class QueriesTrackerTest extends TestCase
 
         $this->assertEquals(1, $tracker->meta()->get('queries_count'));
         $this->assertCount(1, $tracker->data()->get('queries'));
+    }
+
+    /** @test */
+    function forgets_listener_after_terminate()
+    {
+        $tracker = $this->app->make(QueriesTracker::class);
+
+        DB::select('select * from users');
+        DB::transaction(function () {
+            factory(User::class)->create();
+        });
+        try {
+            DB::transaction(function () {
+                throw new Exception();
+            });
+        } catch (Exception $e) {}
+
+        $tracker->terminate();
+        $this->assertFalse(Event::hasListeners(QueryExecuted::class));
+        $this->assertFalse(Event::hasListeners(TransactionBeginning::class));
+        $this->assertFalse(Event::hasListeners(TransactionCommitted::class));
+        $this->assertFalse(Event::hasListeners(TransactionRolledBack::class));
+
+        $tracker->terminate();
+        $this->assertEquals(0, $tracker->meta()->get('queries_count'));
+        $this->assertCount(0, $tracker->data()->get('queries'));
     }
 }
