@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 use Symfony\Component\HttpFoundation\Response;
 use JKocik\Laravel\Profiler\Contracts\ExecutionData;
+use Illuminate\Foundation\Http\Events\RequestHandled;
 use JKocik\Laravel\Profiler\Contracts\ExecutionRoute;
 use JKocik\Laravel\Profiler\Contracts\LaravelListener;
 use JKocik\Laravel\Profiler\LaravelExecution\NullRoute;
@@ -48,7 +49,7 @@ class HttpRequestHandledListener implements LaravelListener
         });
         /** @codeCoverageIgnoreEnd */
 
-        Event::listen(\Illuminate\Foundation\Http\Events\RequestHandled::class, function ($event) {
+        Event::listen(RequestHandled::class, function ($event) {
             $this->executionData->setRequest(new HttpRequest($event->request));
             $this->executionData->setRoute($this->routeOf($event->request));
             $this->executionData->setSession(new HttpSession(session()));
@@ -56,6 +57,15 @@ class HttpRequestHandledListener implements LaravelListener
             $this->executionData->setResponse(new HttpResponse($event->response));
             $this->executionData->setContent(new HttpContent($event->response));
         });
+    }
+
+    /**
+     * @return void
+     */
+    public function forget(): void
+    {
+        Event::forget('kernel.handled');
+        Event::forget(RequestHandled::class);
     }
 
     /**

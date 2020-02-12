@@ -8,8 +8,12 @@ use ReflectionException;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Application;
 use JKocik\Laravel\Profiler\Tests\TestCase;
+use JKocik\Laravel\Profiler\Events\ProfilerBound;
+use JKocik\Laravel\Profiler\LaravelExecutionWatcher;
 use JKocik\Laravel\Profiler\Contracts\ExecutionData;
+use JKocik\Laravel\Profiler\Contracts\ExecutionWatcher;
 use JKocik\Laravel\Profiler\LaravelExecution\HttpRoute;
 use JKocik\Laravel\Profiler\LaravelExecution\NullRoute;
 use JKocik\Laravel\Profiler\LaravelExecution\HttpRequest;
@@ -17,6 +21,8 @@ use JKocik\Laravel\Profiler\LaravelExecution\HttpSession;
 use JKocik\Laravel\Profiler\LaravelExecution\HttpResponse;
 use JKocik\Laravel\Profiler\Tests\Support\Fixtures\DummyController;
 use JKocik\Laravel\Profiler\Tests\Support\Fixtures\DummyFormRequest;
+use JKocik\Laravel\Profiler\LaravelListeners\HttpRequestHandledListener;
+use JKocik\Laravel\Profiler\LaravelListeners\ConsoleCommandFinishedListener;
 
 class LaravelHttpExecutionTest extends TestCase
 {
@@ -31,6 +37,20 @@ class LaravelHttpExecutionTest extends TestCase
     protected function setUp()
     {
         parent::setUp();
+
+        $this->app = $this->appWith(function (Application $app) {
+            $app->make('events')->listen(ProfilerBound::class, function () use ($app) {
+                $app->singleton(ExecutionWatcher::class, function () use ($app) {
+                    return new class(
+                        $app->make(HttpRequestHandledListener::class),
+                        $app->make(ConsoleCommandFinishedListener::class),
+                        $app->make(ExecutionData::class)
+                    ) extends LaravelExecutionWatcher {
+                        public function forget(): void {}
+                    };
+                });
+            });
+        });
 
         $this->turnOffProcessors();
 

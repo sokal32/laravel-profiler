@@ -19,6 +19,11 @@ use JKocik\Laravel\Profiler\LaravelExecution\LaravelExecutionData;
 class LaravelProfiler extends BaseProfiler
 {
     /**
+     * @var ExecutionWatcher
+     */
+    protected $executionWatcher;
+
+    /**
      * @var DataTracker
      */
     protected $dataTracker;
@@ -66,7 +71,8 @@ class LaravelProfiler extends BaseProfiler
      */
     protected function track(): void
     {
-        $this->app->make(ExecutionWatcher::class)->watch();
+        $this->executionWatcher = $this->app->make(ExecutionWatcher::class);
+        $this->executionWatcher->watch();
 
         $this->dataTracker = $this->app->make(DataTracker::class);
         $this->dataTracker->track();
@@ -94,6 +100,8 @@ class LaravelProfiler extends BaseProfiler
 
             $this->dataTracker->terminate();
             $this->app->make(DataProcessor::class)->process($this->dataTracker);
+
+            $this->executionWatcher->forget();
         });
     }
 }

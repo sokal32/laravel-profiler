@@ -8,4 +8,9 @@ interface ExecutionWatcher
      * @return void
      */
     public function watch(): void;
+
+    /**
+     * @return void
+     */
+    public function forget(): void;
 }

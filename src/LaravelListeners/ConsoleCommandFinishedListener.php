@@ -3,6 +3,8 @@
 namespace JKocik\Laravel\Profiler\LaravelListeners;
 
 use Illuminate\Support\Facades\Event;
+use Illuminate\Console\Events\ArtisanStarting;
+use Illuminate\Console\Events\CommandFinished;
 use JKocik\Laravel\Profiler\Contracts\ExecutionData;
 use JKocik\Laravel\Profiler\Contracts\LaravelListener;
 use JKocik\Laravel\Profiler\LaravelExecution\ConsoleStartingRequest;
@@ -31,14 +33,23 @@ class ConsoleCommandFinishedListener implements LaravelListener
      */
     public function listen(): void
     {
-        Event::listen(\Illuminate\Console\Events\ArtisanStarting::class, function ($event) {
+        Event::listen(ArtisanStarting::class, function ($event) {
             $this->executionData->setRequest(new ConsoleStartingRequest());
             $this->executionData->setResponse(new ConsoleStartingResponse());
         });
 
-        Event::listen(\Illuminate\Console\Events\CommandFinished::class, function ($event) {
+        Event::listen(CommandFinished::class, function ($event) {
             $this->executionData->setRequest(new ConsoleFinishedRequest($event->command, $event->input));
             $this->executionData->setResponse(new ConsoleFinishedResponse($event->exitCode));
         });
+    }
+
+    /**
+     * @return void
+     */
+    public function forget(): void
+    {
+        Event::forget(ArtisanStarting::class);
+        Event::forget(CommandFinished::class);
     }
 }
