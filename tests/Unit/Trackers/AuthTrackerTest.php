@@ -77,6 +77,7 @@ class AuthTrackerTest extends TestCase
     /** @test */
     function forgets_listener_after_terminate()
     {
+        Event::forget('*');
         $tracker = $this->app->make(AuthTracker::class);
 
         $user = factory(User::class)->create([

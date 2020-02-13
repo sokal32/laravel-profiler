@@ -154,6 +154,7 @@ class ViewsTrackerTest extends TestCase
     /** @test */
     function forgets_listener_after_terminate()
     {
+        Event::forget('*');
         $tracker = $this->app->make(ViewsTracker::class);
 
         view('tests::dummy-view-a')->render();

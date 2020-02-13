@@ -89,6 +89,7 @@ class RedisTrackerTest extends TestCase
     /** @test */
     function forgets_listener_after_terminate()
     {
+        Event::forget('*');
         $tracker = $this->app->make(RedisTracker::class);
         $this->app->make('redis')->set('name', 'Laravel Profiler');
 
