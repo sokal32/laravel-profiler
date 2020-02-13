@@ -21,6 +21,11 @@ class PerformanceTracker extends BaseTracker
     protected $memory;
 
     /**
+     * @var PerformanceListener
+     */
+    protected $performanceListener;
+
+    /**
      * PerformanceTracker constructor.
      * @param Application $app
      * @param Timer $timer
@@ -37,7 +42,9 @@ class PerformanceTracker extends BaseTracker
 
         $this->timer = $timer;
         $this->memory = $memory;
-        $performanceListener->listen();
+
+        $this->performanceListener = $performanceListener;
+        $this->performanceListener->listen();
     }
 
     /**
@@ -49,5 +56,7 @@ class PerformanceTracker extends BaseTracker
             'timer' => $this->timer->all(),
             'memory' => $this->memory->all(),
         ]));
+
+        $this->performanceListener->forget();
     }
 }

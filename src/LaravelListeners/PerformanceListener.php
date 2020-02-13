@@ -58,6 +58,16 @@ class PerformanceListener implements LaravelListener
     /**
      * @return void
      */
+    public function forget(): void
+    {
+        Event::forget(Tracking::class);
+        Event::forget(RouteMatched::class);
+        Event::forget(Terminating::class);
+    }
+
+    /**
+     * @return void
+     */
     protected function listenHttp(): void
     {
         Event::listen(Tracking::class, function () {

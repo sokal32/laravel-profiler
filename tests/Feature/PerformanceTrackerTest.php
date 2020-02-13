@@ -2,12 +2,18 @@
 
 namespace JKocik\Laravel\Profiler\Tests\Feature;
 
+use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Contracts\Console\Kernel;
+use Illuminate\Routing\Events\RouteMatched;
 use JKocik\Laravel\Profiler\Tests\TestCase;
+use JKocik\Laravel\Profiler\Events\Tracking;
 use JKocik\Laravel\Profiler\Contracts\Timer;
+use Illuminate\Console\Events\ArtisanStarting;
+use JKocik\Laravel\Profiler\Events\Terminating;
 use JKocik\Laravel\Profiler\Tests\Support\PHPMock;
+use Illuminate\Foundation\Http\Events\RequestHandled;
 use JKocik\Laravel\Profiler\Tests\Support\Fixtures\DummyCommand;
 use JKocik\Laravel\Profiler\Tests\Support\Fixtures\PerformanceProcessor;
 
@@ -130,6 +136,18 @@ class PerformanceTrackerTest extends TestCase
         $processor = $this->app->make(PerformanceProcessor::class);
 
         $this->assertEquals(PHPMock::MEMORY_USAGE, $processor->performance->get('memory')['peak']);
+    }
+
+    /** @test */
+    function forgets_listener_after_terminate()
+    {
+        $this->app->terminate();
+        $this->assertFalse(Event::hasListeners(Tracking::class));
+        $this->assertFalse(Event::hasListeners(RouteMatched::class));
+        $this->assertFalse(Event::hasListeners('kernel.handled'));
+        $this->assertFalse(Event::hasListeners(RequestHandled::class));
+        $this->assertFalse(Event::hasListeners(Terminating::class));
+        $this->assertFalse(Event::hasListeners(ArtisanStarting::class));
     }
 
     /**
