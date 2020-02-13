@@ -7,6 +7,8 @@ use Illuminate\Console\Events\ArtisanStarting;
 use Illuminate\Console\Events\CommandFinished;
 use JKocik\Laravel\Profiler\Contracts\ExecutionData;
 use JKocik\Laravel\Profiler\Contracts\LaravelListener;
+use JKocik\Laravel\Profiler\LaravelExecution\NullRequest;
+use JKocik\Laravel\Profiler\LaravelExecution\NullResponse;
 use JKocik\Laravel\Profiler\LaravelExecution\ConsoleStartingRequest;
 use JKocik\Laravel\Profiler\LaravelExecution\ConsoleFinishedRequest;
 use JKocik\Laravel\Profiler\LaravelExecution\ConsoleStartingResponse;
@@ -51,5 +53,8 @@ class ConsoleCommandFinishedListener implements LaravelListener
     {
         Event::forget(ArtisanStarting::class);
         Event::forget(CommandFinished::class);
+
+        $this->executionData->setRequest(new NullRequest());
+        $this->executionData->setResponse(new NullResponse());
     }
 }

@@ -11,11 +11,16 @@ use JKocik\Laravel\Profiler\Contracts\ExecutionRoute;
 use JKocik\Laravel\Profiler\Contracts\LaravelListener;
 use JKocik\Laravel\Profiler\LaravelExecution\NullRoute;
 use JKocik\Laravel\Profiler\LaravelExecution\HttpRoute;
+use JKocik\Laravel\Profiler\LaravelExecution\NullServer;
 use JKocik\Laravel\Profiler\LaravelExecution\HttpServer;
+use JKocik\Laravel\Profiler\LaravelExecution\NullSession;
+use JKocik\Laravel\Profiler\LaravelExecution\NullContent;
+use JKocik\Laravel\Profiler\LaravelExecution\NullRequest;
 use JKocik\Laravel\Profiler\LaravelExecution\HttpSession;
 use JKocik\Laravel\Profiler\LaravelExecution\HttpContent;
 use JKocik\Laravel\Profiler\LaravelExecution\HttpRequest;
 use JKocik\Laravel\Profiler\LaravelExecution\HttpResponse;
+use JKocik\Laravel\Profiler\LaravelExecution\NullResponse;
 
 class HttpRequestHandledListener implements LaravelListener
 {
@@ -66,6 +71,13 @@ class HttpRequestHandledListener implements LaravelListener
     {
         Event::forget('kernel.handled');
         Event::forget(RequestHandled::class);
+
+        $this->executionData->setRequest(new NullRequest());
+        $this->executionData->setRoute(new NullRoute());
+        $this->executionData->setSession(new NullSession());
+        $this->executionData->setServer(new NullServer());
+        $this->executionData->setResponse(new NullResponse());
+        $this->executionData->setContent(new NullContent());
     }
 
     /**
