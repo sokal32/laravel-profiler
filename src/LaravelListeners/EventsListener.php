@@ -56,6 +56,16 @@ class EventsListener implements LaravelListener
     }
 
     /**
+     * @return void
+     */
+    public function forget(): void
+    {
+        $this->dispatcher->forget('*');
+        $this->events = [];
+        $this->count = 0;
+    }
+
+    /**
      * @return Collection
      */
     public function events(): Collection

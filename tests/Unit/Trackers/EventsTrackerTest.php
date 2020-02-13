@@ -5,6 +5,7 @@ namespace JKocik\Laravel\Profiler\Tests\Unit\Trackers;
 use App\User;
 use Exception;
 use Illuminate\Events\Dispatcher;
+use Illuminate\Support\Facades\Event;
 use JKocik\Laravel\Profiler\Tests\TestCase;
 use JKocik\Laravel\Profiler\Events\Tracking;
 use JKocik\Laravel\Profiler\Events\Terminating;
@@ -239,5 +240,19 @@ class EventsTrackerTest extends TestCase
 
         $this->assertEquals(1, $tracker->meta()->get('events_count'));
         $this->assertCount(1, $tracker->data()->get('events'));
+    }
+
+    /** @test */
+    function forgets_listener_after_terminate()
+    {
+        $tracker = $this->app->make(EventsTracker::class);
+        event(new DummyEventA());
+
+        $tracker->terminate();
+        $this->assertFalse(Event::hasListeners('*'));
+
+        $tracker->terminate();
+        $this->assertEquals(0, $tracker->meta()->get('events_count'));
+        $this->assertCount(0, $tracker->data()->get('events'));
     }
 }

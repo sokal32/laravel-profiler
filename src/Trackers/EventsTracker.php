@@ -70,6 +70,8 @@ class EventsTracker extends BaseTracker
 
         $this->meta->put('events_count', $this->eventsListener->count());
         $this->data->put('events', $events);
+
+        $this->eventsListener->forget();
     }
 
     /**
