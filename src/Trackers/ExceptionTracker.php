@@ -38,6 +38,8 @@ class ExceptionTracker extends BaseTracker
         $exception = $this->exceptionListener->exception() ? $this->exception() : null;
 
         $this->data->put('exception', $exception);
+
+        $this->exceptionListener->forget();
     }
 
     /**

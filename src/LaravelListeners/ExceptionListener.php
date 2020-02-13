@@ -25,6 +25,15 @@ class ExceptionListener implements LaravelListener
     }
 
     /**
+     * @return void
+     */
+    public function forget(): void
+    {
+        Event::forget(ExceptionHandling::class);
+        $this->exception = null;
+    }
+
+    /**
      * @return Exception|null
      */
     public function exception(): ?Exception

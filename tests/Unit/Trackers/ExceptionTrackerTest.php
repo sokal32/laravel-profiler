@@ -86,4 +86,18 @@ class ExceptionTrackerTest extends TestCase
             $mock->shouldHaveReceived('report')->once();
         });
     }
+
+    /** @test */
+    function forgets_listener_after_terminate()
+    {
+        $tracker = $this->app->make(ExceptionTracker::class);
+
+        $this->get('/i-can-not-find-that-page');
+
+        $tracker->terminate();
+        $this->assertFalse(Event::hasListeners(ExceptionHandling::class));
+
+        $tracker->terminate();
+        $this->assertNull($tracker->data()->get('exception'));
+    }
 }
