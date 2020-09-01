@@ -32,12 +32,12 @@ class FoundationAppAdapter extends Application
         $this->booted = true;
     }
 
-    public function beforeBootstrapping($bootstrapper, Closure $callback)
+    public function beforeBootstrapping($bootstrapper, \Closure $callback)
     {
         $this->beforeBootstrappingCallbacks[] = $callback;
     }
 
-    public function afterBootstrapping($bootstrapper, Closure $callback)
+    public function afterBootstrapping($bootstrapper, \Closure $callback)
     {
         $this->afterBootstrappingCallbacks[] = $callback;
     }

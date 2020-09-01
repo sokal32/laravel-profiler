@@ -145,4 +145,8 @@ return [
 
     'handle_exceptions' => 1,
 
+    'ignore_commands' => [
+        'schedule:run'
+    ],
+
 ];
