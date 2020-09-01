@@ -7,7 +7,7 @@ use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Foundation\Application;
+use Laravel\Lumen\Application;
 use JKocik\Laravel\Profiler\Tests\TestCase;
 use JKocik\Laravel\Profiler\Services\ConfigService;
 use JKocik\Laravel\Profiler\Tests\Support\Fixtures\TrackerA;

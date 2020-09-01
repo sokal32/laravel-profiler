@@ -3,7 +3,7 @@
 namespace JKocik\Laravel\Profiler\Tests;
 
 use Closure;
-use Illuminate\Foundation\Application;
+use Laravel\Lumen\Application;
 use Illuminate\Contracts\Console\Kernel;
 use phpmock\environment\MockEnvironment;
 use JKocik\Laravel\Profiler\ServiceProvider;

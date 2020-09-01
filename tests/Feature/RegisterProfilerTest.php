@@ -4,7 +4,7 @@ namespace JKocik\Laravel\Profiler\Tests\Feature;
 
 use Mockery;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Foundation\Application;
+use Laravel\Lumen\Application;
 use Illuminate\Contracts\Console\Kernel;
 use JKocik\Laravel\Profiler\Tests\TestCase;
 use JKocik\Laravel\Profiler\Contracts\Timer;

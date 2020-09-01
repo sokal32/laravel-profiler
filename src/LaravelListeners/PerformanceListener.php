@@ -3,7 +3,7 @@
 namespace JKocik\Laravel\Profiler\LaravelListeners;
 
 use Illuminate\Support\Facades\Event;
-use Illuminate\Foundation\Application;
+use Laravel\Lumen\Application;
 use Illuminate\Routing\Events\RouteMatched;
 use JKocik\Laravel\Profiler\Events\Tracking;
 use JKocik\Laravel\Profiler\Contracts\Timer;

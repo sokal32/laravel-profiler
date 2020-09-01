@@ -3,7 +3,7 @@
 namespace JKocik\Laravel\Profiler\Trackers;
 
 use Illuminate\Support\Collection;
-use Illuminate\Foundation\Application;
+use Laravel\Lumen\Application;
 use JKocik\Laravel\Profiler\Services\GeneratorService;
 
 class ApplicationTracker extends BaseTracker
@@ -34,7 +34,7 @@ class ApplicationTracker extends BaseTracker
         $this->meta->put('id', $this->generatorService->unique32CharsId());
         $this->meta->put('laravel_version', $this->app->version());
         $this->meta->put('php_version', phpversion());
-        $this->meta->put('env', $this->app->environment());
+        $this->meta->put('env', config('app.name'));
         $this->meta->put('is_running_in_console', $this->app->runningInConsole());
 
         $this->data->put('application', Collection::make([
@@ -42,7 +42,7 @@ class ApplicationTracker extends BaseTracker
             'configuration_is_cached' => $this->app->configurationIsCached(),
             'routes_are_cached' => $this->app->routesAreCached(),
             'is_down_for_maintenance' => $this->app->isDownForMaintenance(),
-            'should_skip_middleware' => $this->app->shouldSkipMiddleware(),
+            // 'should_skip_middleware' => $this->app->shouldSkipMiddleware(),
         ]));
     }
 }

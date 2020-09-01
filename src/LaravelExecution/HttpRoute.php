@@ -15,15 +15,15 @@ use JKocik\Laravel\Profiler\Contracts\ExecutionRoute;
 class HttpRoute implements ExecutionRoute
 {
     /**
-     * @var Route
+     * @var Route|array
      */
     protected $route;
 
     /**
      * HttpRoute constructor.
-     * @param Route $route
+     * @param Route|array $route
      */
-    public function __construct(Route $route)
+    public function __construct($route)
     {
         $this->route = $route;
     }
@@ -41,15 +41,19 @@ class HttpRoute implements ExecutionRoute
      */
     public function data(): Collection
     {
-        return Collection::make([
-            'methods' => $this->route->methods(),
-            'uri' => $this->route->uri(),
-            'name' => $this->route->getName(),
-            'middleware' => $this->route->middleware(),
-            'parameters' => $this->route->parameters(),
-            'prefix' => $this->route->getPrefix(),
-            'uses' => $this->uses(),
-        ]);
+        if (is_array($this->route)) {
+            return Collection::make($this->route);
+        } else {
+            return Collection::make([
+                'methods' => $this->route->methods(),
+                'uri' => $this->route->uri(),
+                'name' => $this->route->getName(),
+                'middleware' => $this->route->middleware(),
+                'parameters' => $this->route->parameters(),
+                'prefix' => $this->route->getPrefix(),
+                'uses' => $this->uses(),
+            ]);
+        }
     }
 
     /**

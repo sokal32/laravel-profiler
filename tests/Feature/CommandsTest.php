@@ -7,7 +7,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Foundation\Application;
+use Laravel\Lumen\Application;
 use Illuminate\Support\Facades\Artisan;
 use GuzzleHttp\Exception\ConnectException;
 use JKocik\Laravel\Profiler\Tests\TestCase;

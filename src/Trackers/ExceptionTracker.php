@@ -4,7 +4,7 @@ namespace JKocik\Laravel\Profiler\Trackers;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Illuminate\Foundation\Application;
+use Laravel\Lumen\Application;
 use JKocik\Laravel\Profiler\LaravelListeners\ExceptionListener;
 use JKocik\Laravel\Profiler\LaravelExecution\ExceptionHandlerTillVersion6;
 use JKocik\Laravel\Profiler\LaravelExecution\ExceptionHandlerFromVersion7;

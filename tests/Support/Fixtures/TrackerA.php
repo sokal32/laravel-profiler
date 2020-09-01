@@ -2,7 +2,7 @@
 
 namespace JKocik\Laravel\Profiler\Tests\Support\Fixtures;
 
-use Illuminate\Foundation\Application;
+use Laravel\Lumen\Application;
 use JKocik\Laravel\Profiler\Trackers\BaseTracker;
 
 class TrackerA extends BaseTracker

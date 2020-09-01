@@ -3,7 +3,7 @@
 namespace JKocik\Laravel\Profiler\Tests\Unit\Trackers;
 
 use Mockery;
-use Illuminate\Foundation\Application;
+use Laravel\Lumen\Application;
 use JKocik\Laravel\Profiler\Tests\TestCase;
 use JKocik\Laravel\Profiler\Tests\Support\PHPMock;
 use JKocik\Laravel\Profiler\Trackers\ApplicationTracker;

@@ -2,7 +2,7 @@
 
 namespace JKocik\Laravel\Profiler\Services;
 
-use Illuminate\Foundation\Application;
+use Laravel\Lumen\Application;
 
 class ConsoleService
 {

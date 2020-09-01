@@ -2,7 +2,7 @@
 
 namespace JKocik\Laravel\Profiler\Tests\Unit\Services;
 
-use Illuminate\Foundation\Application;
+use Laravel\Lumen\Application;
 use JKocik\Laravel\Profiler\Tests\TestCase;
 use JKocik\Laravel\Profiler\Services\LogService;
 use JKocik\Laravel\Profiler\Services\ConfigService;

@@ -4,7 +4,7 @@ namespace JKocik\Laravel\Profiler\Services;
 
 use Illuminate\Config\Repository;
 use Illuminate\Support\Collection;
-use Illuminate\Foundation\Application;
+use Laravel\Lumen\Application;
 
 class ConfigService
 {
@@ -34,7 +34,7 @@ class ConfigService
      */
     public function isProfilerEnabled(): bool
     {
-        $enabledOverrides = Collection::make($this->config->get('profiler.enabled_overrides'));
+        $enabledOverrides = Collection::make(config('profiler.enabled_overrides'));
         $envToDisable = $enabledOverrides->filter(function ($enabled) {
             return ! $enabled;
         })->keys();
@@ -43,7 +43,7 @@ class ConfigService
             return false;
         }
 
-        return $this->config->get('profiler.enabled') === true;
+        return config('profiler.enabled') === true;
     }
 
     /**
@@ -51,7 +51,7 @@ class ConfigService
      */
     public function trackers(): Collection
     {
-        return Collection::make($this->config->get('profiler.trackers'));
+        return Collection::make(config('profiler.trackers'));
     }
 
     /**
@@ -59,7 +59,7 @@ class ConfigService
      */
     public function processors(): Collection
     {
-        return Collection::make($this->config->get('profiler.processors'));
+        return Collection::make(config('profiler.processors'));
     }
 
     /**
@@ -75,7 +75,7 @@ class ConfigService
      */
     public function pathsToTurnOffProcessors(): Collection
     {
-        return Collection::make($this->config->get('profiler.turn_off_processors_for_paths'));
+        return Collection::make(config('profiler.turn_off_processors_for_paths'));
     }
 
     /**
@@ -83,8 +83,8 @@ class ConfigService
      */
     public function serverHttpConnectionUrl(): string
     {
-        $address = $this->config->get('profiler.server_http.address');
-        $port = $this->config->get('profiler.server_http.port');
+        $address = 'core-service'; //config('profiler.server_http.address');
+        $port = config('profiler.server_http.port');
 
         return  $address . ':' . $port;
     }
@@ -94,7 +94,7 @@ class ConfigService
      */
     public function serverHttpPort(): string
     {
-        return $this->config->get('profiler.server_http.port');
+        return config('profiler.server_http.port');
     }
 
     /**
@@ -102,7 +102,7 @@ class ConfigService
      */
     public function serverSocketsPort(): string
     {
-        return $this->config->get('profiler.server_sockets.port');
+        return config('profiler.server_sockets.port');
     }
 
     /**
@@ -110,7 +110,7 @@ class ConfigService
      */
     public function isViewsDataEnabled(): bool
     {
-        return $this->config->get('profiler.data.views');
+        return config('profiler.data.views');
     }
 
     /**
@@ -118,7 +118,7 @@ class ConfigService
      */
     public function isEventsDataEnabled(): bool
     {
-        return $this->config->get('profiler.data.events');
+        return config('profiler.data.events');
     }
 
     /**
@@ -126,7 +126,7 @@ class ConfigService
      */
     public function isEventsGroupEnabled(): bool
     {
-        return $this->config->get('profiler.group.events');
+        return config('profiler.group.events');
     }
 
     /**
@@ -135,6 +135,6 @@ class ConfigService
      */
     public function handleExceptions(int $level): bool
     {
-        return $this->config->get('profiler.handle_exceptions') === $level;
+        return config('profiler.handle_exceptions') === $level;
     }
 }

@@ -34,9 +34,7 @@ class ServiceProvider extends BaseServiceProvider
      */
     public function allowConfigFileToBePublished(): void
     {
-        $this->publishes([
-            static::profilerConfigPath() => config_path('profiler.php'),
-        ]);
+        $this->app->configure('profiler');
     }
 
     /**

@@ -39,6 +39,7 @@ class ConsoleCommandFinishedListener implements LaravelListener
         Event::listen(\Illuminate\Console\Events\CommandFinished::class, function ($event) {
             $this->executionData->setRequest(new ConsoleFinishedRequest($event->command, $event->input));
             $this->executionData->setResponse(new ConsoleFinishedResponse($event->exitCode));
+            $GLOBALS['app']->terminate();
         });
     }
 }

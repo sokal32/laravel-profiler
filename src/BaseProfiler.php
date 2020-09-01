@@ -3,7 +3,7 @@
 namespace JKocik\Laravel\Profiler;
 
 use Illuminate\Support\Facades\Event;
-use Illuminate\Foundation\Application;
+use Laravel\Lumen\Application;
 use Illuminate\Console\Events\ArtisanStarting;
 use JKocik\Laravel\Profiler\Contracts\Profiler;
 use JKocik\Laravel\Profiler\Events\ResetTrackers;
@@ -41,10 +41,10 @@ abstract class BaseProfiler implements Profiler
      */
     public function listenForBoot(): void
     {
-        $this->app->beforeBootstrapping(BootProviders::class, function () {
+       $this->app->beforeBootstrapping(BootProviders::class, function () {
             $this->commands();
             $this->boot();
-        });
+       });
     }
 
     /**

@@ -3,7 +3,7 @@
 namespace JKocik\Laravel\Profiler\Trackers;
 
 use Illuminate\Support\Collection;
-use Illuminate\Foundation\Application;
+use Laravel\Lumen\Application;
 use JKocik\Laravel\Profiler\Contracts\Timer;
 use JKocik\Laravel\Profiler\Contracts\Memory;
 use JKocik\Laravel\Profiler\LaravelListeners\PerformanceListener;

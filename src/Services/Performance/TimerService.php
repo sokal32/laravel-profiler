@@ -3,7 +3,7 @@
 namespace JKocik\Laravel\Profiler\Services\Performance;
 
 use Illuminate\Support\Collection;
-use Illuminate\Foundation\Application;
+use Laravel\Lumen\Application;
 use JKocik\Laravel\Profiler\Contracts\Timer;
 
 class TimerService implements Timer

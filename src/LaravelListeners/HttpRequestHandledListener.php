@@ -2,9 +2,7 @@
 
 namespace JKocik\Laravel\Profiler\LaravelListeners;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
-use Symfony\Component\HttpFoundation\Response;
 use JKocik\Laravel\Profiler\Contracts\ExecutionData;
 use JKocik\Laravel\Profiler\Contracts\ExecutionRoute;
 use JKocik\Laravel\Profiler\Contracts\LaravelListener;
@@ -38,10 +36,10 @@ class HttpRequestHandledListener implements LaravelListener
     public function listen(): void
     {
         /** @codeCoverageIgnoreStart */
-        Event::listen('kernel.handled', function (Request $request, Response $response) {
+        Event::listen('kernel.handled', function ($request, $response) {
             $this->executionData->setRequest(new HttpRequest($request));
             $this->executionData->setRoute($this->routeOf($request));
-            $this->executionData->setSession(new HttpSession(session()));
+            // $this->executionData->setSession(new HttpSession(session()));
             $this->executionData->setServer(new HttpServer($request));
             $this->executionData->setResponse(new HttpResponse($response));
             $this->executionData->setContent(new HttpContent($response));
@@ -62,8 +60,19 @@ class HttpRequestHandledListener implements LaravelListener
      * @param Request $request
      * @return ExecutionRoute
      */
-    protected function routeOf(Request $request): ExecutionRoute
+    protected function routeOf($request): ExecutionRoute
     {
-        return $request->route() ? new HttpRoute($request->route()) : new NullRoute();
+        $route = $request->route();
+        if (is_array($route)) {
+            $route = [
+                'methods' => [$request->getMethod()],
+                'name' => @$route[1]['as'],
+                'uri' => $request->getPathInfo(),
+                'middleware' => @$route[1]['middleware'],
+                'uses' => @$route[1]['uses'],
+                'parameters' => @$route[2],
+            ];
+        }
+        return new HttpRoute($route);
     }
 }

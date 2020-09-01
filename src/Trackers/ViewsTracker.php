@@ -3,7 +3,7 @@
 namespace JKocik\Laravel\Profiler\Trackers;
 
 use Illuminate\View\View;
-use Illuminate\Foundation\Application;
+use Laravel\Lumen\Application;
 use JKocik\Laravel\Profiler\Services\ConfigService;
 use JKocik\Laravel\Profiler\Services\ParamsService;
 use JKocik\Laravel\Profiler\LaravelListeners\ViewsListener;

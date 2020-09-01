@@ -2,7 +2,7 @@
 
 namespace JKocik\Laravel\Profiler;
 
-use Illuminate\Foundation\Application;
+use Laravel\Lumen\Application;
 use JKocik\Laravel\Profiler\Contracts\Profiler;
 use JKocik\Laravel\Profiler\Services\ConfigService;
 
@@ -34,9 +34,9 @@ class ProfilerResolver
      */
     public function resolve(): Profiler
     {
-        if (! $this->configService->isProfilerEnabled()) {
-            return $this->app->make(DisabledProfiler::class);
-        }
+         if (! $this->configService->isProfilerEnabled()) {
+             return $this->app->make(DisabledProfiler::class);
+         }
 
         return $this->app->make(LaravelProfiler::class);
     }

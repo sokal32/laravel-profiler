@@ -2,7 +2,7 @@
 
 namespace JKocik\Laravel\Profiler\Tests\Feature;
 
-use Illuminate\Foundation\Application;
+use Laravel\Lumen\Application;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Contracts\Console\Kernel;
 use JKocik\Laravel\Profiler\Tests\TestCase;

@@ -2,7 +2,7 @@
 
 namespace JKocik\Laravel\Profiler\Trackers;
 
-use Illuminate\Foundation\Application;
+use Laravel\Lumen\Application;
 use JKocik\Laravel\Profiler\Contracts\ExecutionData;
 
 class ServerTracker extends BaseTracker

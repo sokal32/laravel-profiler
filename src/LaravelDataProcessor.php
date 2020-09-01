@@ -3,7 +3,7 @@
 namespace JKocik\Laravel\Profiler;
 
 use Exception;
-use Illuminate\Foundation\Application;
+use Laravel\Lumen\Application;
 use JKocik\Laravel\Profiler\Services\LogService;
 use JKocik\Laravel\Profiler\Contracts\Processor;
 use JKocik\Laravel\Profiler\Contracts\DataTracker;

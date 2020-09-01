@@ -3,7 +3,7 @@
 namespace JKocik\Laravel\Profiler\Tests\Feature;
 
 use Illuminate\Support\Facades\Event;
-use Illuminate\Foundation\Application;
+use Laravel\Lumen\Application;
 use JKocik\Laravel\Profiler\Tests\TestCase;
 use JKocik\Laravel\Profiler\Events\ResetTrackers;
 
