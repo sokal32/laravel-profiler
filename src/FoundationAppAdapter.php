@@ -6,11 +6,26 @@ use Laravel\Lumen\Application;
 
 class FoundationAppAdapter extends Application
 {
-    private $beforeBootstrappingCallbacks = [];
-    private $afterBootstrappingCallbacks = [];
-    private $bootingCallbacks = [];
-    private $bootedCallbacks = [];
-    private $terminatingCallbacks = [];
+    protected $beforeBootstrappingCallbacks = [];
+    protected $afterBootstrappingCallbacks = [];
+    protected $bootingCallbacks = [];
+    protected $bootedCallbacks = [];
+    protected $terminatingCallbacks = [];
+
+    protected function bootstrapContainer()
+    {
+        static::setInstance($this);
+
+        $this->instance('app', $this);
+        $this->instance(self::class, $this);
+        $this->instance(Application::class, $this);
+
+        $this->instance('path', $this->path());
+
+        $this->instance('env', $this->environment());
+
+        $this->registerContainerAliases();
+    }
 
     public function boot()
     {
